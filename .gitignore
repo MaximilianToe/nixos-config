@@ -1,0 +1,7 @@
+hardware-configuration.nix
+
+secrets/
+*.secret
+
+.direnv/
+result/
