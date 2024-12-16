@@ -2,14 +2,25 @@
 
 {
 
-	services.xserver.windowManager.i3.enable = true;
 
-	services.xserver.enable = true;
 
-	environment.systemPackages = with pkgs; [
-		i3
-		i3status
-		dmenu
-	];
+	services.xserver = {
+		enable = true;
+		windowManager.i3 = {
+			extraPackages = with pkgs; [
+				dmenu
+				i3status
+				i3lock
+				i3blocks
+				rofi
+				polybar
+			];
+			enable = true;
+			configFile =  /home/max/.dotfiles/.config/i3/config;	
+		};
+
+	displayManager.lightdm.enable = true;
+	};
+
 }
 

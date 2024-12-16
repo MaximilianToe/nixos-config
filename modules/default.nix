@@ -3,6 +3,8 @@
 {
 	imports = 
 	[
-	./gui/default.nix
+	./gui
+	./fonts
+	./nvim
 	];
 }

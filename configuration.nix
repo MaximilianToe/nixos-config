@@ -69,7 +69,6 @@ in
   # $ nix search wget
 
   environment.systemPackages = with pkgs; [
-	neovim
 	vim
 	git
 	firefox
