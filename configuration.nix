@@ -2,13 +2,17 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 { config, pkgs, ... }:
+let 
+	home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+in
 {
 
   nix.settings.experimental-features = [ "nix-command" "flakes"];
   imports =
     [ # Include the results of the hardware scan.
+	./modules/default.nix
       ./hardware-configuration.nix
-      <home-manager/nixos>
+      (import "${home-manager}/nixos")
     ];
 
   # Bootloader.
@@ -52,15 +56,11 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.max = {
     isNormalUser = true;
-    description = "Maximilian Toenies";
+    description = "max";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
   };
 
-home-manager.users.max = {pkgs, ... }: {
-	programs.zsh.enable = true;
-	home.stateVersion = "24.11";
-	};
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -90,34 +90,10 @@ home-manager.users.max = {pkgs, ... }: {
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
-  services.xserver = {
-  	layout = "us";
-	xkbVariant = "";
-  	enable = true;
-
-	windowManager.i3 = {
-	enable = true;
-	extraPackages = with pkgs; [
-		i3status
-	];
+  home-manager.users.max = {
+  	home.stateVersion = "24.11";
 	};
 
-
-	desktopManager = {
-	xterm.enable = false;
-	xfce = {
-		enable = true;
-		noDesktop = true;
-		enableXfwm = false;
-	};	
-
-	};
-
-	displayManager = {
-		lightdm.enable = true;
-		defaultSession ="xfce+i3";
-	};
-};
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
